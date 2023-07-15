@@ -1,0 +1,35 @@
+{
+    "productos": [
+      {
+        "nombre": "Tenis Lite Racer CLN",
+        "categoria": "mujer",
+        "precio": "$226.00",
+        "descripcion": "These low-profile sneakers are you perfect profile wear companion. Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.",
+        "Disponibles": 100,
+        "ID": 4,
+        "imagenPrincipal": "https://res.cloudinary.com/db4z2keyg/image/upload/v1689307842/men_3_pqntoc.jpg",
+        "Thumbnails": [
+          "./images/image-product-1-thumbnail.jpg", 
+          "./images/image-product-2-thumbnail.jpg",
+          "./images/image-product-3-thumbnail.jpg",
+          "./images/image-product-4-thumbnail.jpg"
+        ]
+      },
+      {
+        "nombre": "Tenis Lite Racer CLN",
+        "categoria": "mujer",
+        "precio": "$226.00",
+        "descripcion": "These low-profile sneakers are you perfect profile wear companion. Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.",
+        "Disponibles": 100,
+        "ID": 5,
+        "imagenPrincipal": "https://res.cloudinary.com/db4z2keyg/image/upload/v1689307842/men_2_mjp25w.jpg",
+        "Thumbnails": [
+          "./images/image-product-1-thumbnail.jpg", 
+          "./images/image-product-2-thumbnail.jpg",
+          "./images/image-product-3-thumbnail.jpg",
+          "./images/image-product-4-thumbnail.jpg"
+        ]
+      }
+    ],
+    "compras": []
+}
