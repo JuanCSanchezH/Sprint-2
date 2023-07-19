@@ -160,6 +160,8 @@ article {
     color: rgb(83, 83, 83);
     font-style: italic;
     margin-bottom: 0;
+    padding-right: 0;
+    width: 70px;
   }
 
   #discount-popover {
@@ -179,6 +181,15 @@ article {
     font-size: 0.8rem;
     font-weight: 700;
     color: rgb(83, 83, 83);
+  }
+
+  #delete-popover{
+    display: flex;
+    justify-content: end;
+    align-items: start;
+    width: 40px;
+    border: none;
+    background: none;
   }
 
   #cont50 {

@@ -32,7 +32,7 @@
                    <!-- Button trigger popover -->
                 <button type="button" id="car" data-bs-toggle="popover" data-bs-placement="bottom" title="Shopping Cart" data-bs-html="true" data-bs-content="#contenido">
                   <div id="p-cart"></div>
-                  <img src="images/icon-cart.svg" alt="">
+                  <img src="images/icon-cart2.svg" alt="">
                 </button>
                 <div hidden>
                   <div id="contenido"></div>  
@@ -49,27 +49,27 @@
                       <div class="modal-body">
                         <form><!-- Form -->
                           <div class="mb-3">
-                            <input type="text" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="Full name">
-                            <input type="text" name="ID" class="form-control mb-2" id="" aria-describedby="CC" placeholder="ID">
-                            <input type="text" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="Number Phone">
-                            <input type="mail" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="Email">
+                            <input type="text" name="nombre" class="form-control mb-2" id="nombre" aria-describedby="name" placeholder="Full Name" required>
+                            <input type="text" name="ID" class="form-control mb-2" id="ID" aria-describedby="CC" placeholder="ID" required>
+                            <input type="text" name="celular" class="form-control mb-2" id="celular" aria-describedby="name" placeholder="Number Phone" required>
+                            <input type="email" name="correo" class="form-control mb-2" id="correo" aria-describedby="name" placeholder="Email" required>
                             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                           </div>
                           <div class="mb-5">
                             <label for="exampleInputPassword1" class="form-label fw-bold">Credit card information</label>
-                              <input type="text" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="Card number">
+                              <input type="text" name="card-number" class="form-control mb-2" id="card-number" aria-describedby="name" placeholder="Card Number" required>
                               <div class="row">
                                 <div class="col-2">
-                                    <input type="text" name="ID" class="form-control mb-2" id="" aria-describedby="CC" placeholder="MM">
+                                    <input type="text" name="MM" class="form-control mb-2" id="MM" aria-describedby="CC" placeholder="MM" required>
                                 </div>
                                 <div class="col-2">
-                                  <input type="text" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="YY">
+                                  <input type="text" name="YY" class="form-control mb-2" id="YY" aria-describedby="name" placeholder="YY" required>
                                 </div>
                                 <div class="col-4">
-                                  <input type="mail" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="000">
+                                  <input type="text" name="000" class="form-control mb-2" id="000" aria-describedby="name" placeholder="000" required>
                                 </div>
                               </div>
-                              <input type="text" name="nombre" class="form-control mb-2" id="" aria-describedby="name" placeholder="Cardholder">  
+                              <input type="text" name="Cardholder" class="form-control mb-2" id="Cardholder" aria-describedby="name" placeholder="Cardholder" required>  
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -110,7 +110,6 @@
         </div>
       </div>
     </div>  -->
-    
     <main class="row" id="listaProductos">
       <!-- //content// -->
     </main>

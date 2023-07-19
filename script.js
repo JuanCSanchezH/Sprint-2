@@ -2,44 +2,31 @@ import {listProducts, createProduct, updateProduct, deleteProduct} from './servi
 
 let arrProductos = [];
 const formulario = document.querySelector("form");
-const updateProd = document.querySelector("#updateProduct")
-let editButton = null;
 let pCount = null;
 let idSelectedProduct = null;
 let cart = [];
 let total = null;
-let img = null;
-
-// updateProd.addEventListener('click', async()=>{
-//     const formdata = new FormData(formulario);
-
-//     const jsonData = {};
-
-//     for (let [key, value] of formdata.entries()) {
-//         jsonData[key] = value;
-//     }
-//     jsonData['id'] = idSelectedProduct
-//     await updateProduct(jsonData)
-// })
+let imgCarousel = null;
+let btnDelete = null;
+let idSelectedToDelete = null
 
 document.addEventListener('click', (event) =>  {
-    if(event.target.classList.contains('editProduct')) {
-        idSelectedProduct = event.target.attributes['data-id'].value;
-        const product = arrProductos.find(item => item.id == idSelectedProduct)
+    // if(event.target.classList.contains('editProduct')) {
+    //     idSelectedProduct = event.target.attributes['data-id'].value;
+    //     const product = arrProductos.find(item => item.id == idSelectedProduct)
         
-        document.getElementById("nombre").value = product.nombre;
-        document.getElementById("precio").value = product.precio;
-        document.getElementById("cantidad").value = product.cantidad;
-        document.getElementById("categoria").value = product.categoria;
-    }
+    //     document.getElementById("nombre").value = product.nombre;
+    //     document.getElementById("precio").value = product.precio;
+    //     document.getElementById("cantidad").value = product.cantidad;
+    //     document.getElementById("categoria").value = product.categoria;
+    // }
 
-    if(event.target.classList.contains('deleteProduct')) {
-        idSelectedProduct = event.target.attributes['data-id'].value;
-        deleteProduct(idSelectedProduct)
-    }
+    // if(event.target.classList.contains('deleteProduct')) {
+    //     idSelectedProduct = event.target.attributes['data-id'].value;
+    //     deleteProduct(idSelectedProduct)
+    // }
 
     if(event.target.classList.contains("counter-buttons")){
-        console.log('Hola')
         idSelectedProduct = event.target.attributes['data-id'].value;
         const operacion = event.target.attributes["value"].nodeValue;
         const product = arrProductos.find(item => item.ID == idSelectedProduct);
@@ -47,10 +34,8 @@ document.addEventListener('click', (event) =>  {
             item.textContent = '';
             if(idSelectedProduct==item.attributes['data-id'].value){
                 if(operacion == "+"){
-                    console.log(product.contador);
                     product.contador += 1;
                 }else if(operacion == "-" && product.contador>1){
-                    console.log(product.contador);
                     product.contador -= 1;
                 }
                 item.textContent = product.contador;
@@ -91,11 +76,31 @@ document.addEventListener('click', (event) =>  {
                         <p class="col-6" id="price-popover">$${item.precio}</p>
                         <p class="col-6" id="discount-popover">${item.descuento}% off</p>
                     </div>
-                    <p id="units-popover">Units: ${item.unidades}</p>
+                    <div class="row" style="justify-content: space-between">
+                        <p id="units-popover" class="col-6">Units: ${item.unidades}</p>
+                        <button id="delete-popover" data-id="${item.ID}" class="delete-popover"><img src="/images/trash_3096673.png" alt=""></button>
+                    </div>
                 </div>
             </div>
             `
         });
+        // const miBoton = document.createElement('button');
+        // miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+        // miBoton.textContent = 'X';
+        // miBoton.style.marginLeft = '1rem';
+        // miBoton.dataset.item = item;
+        // miBoton.addEventListener('click', borrarItemCarrito);
+        // // Mezclamos nodos
+        // miNodo.appendChild(miBoton);
+        // //DOMcarrito.appendChild(miNodo)
+
+        btnDelete = document.querySelectorAll(".delete-popover");
+        btnDelete.forEach(item => {
+            item.onclick = () =>{
+                idSelectedToDelete = item.attributes['data-id'].value;
+                console.log(idSelectedToDelete);
+            }
+        });    
         html.innerHTML += `
             <div class="row mb-2">
                 <p class="col-12" id="price-popover">Total: $${total}</p>
@@ -117,7 +122,25 @@ document.addEventListener('click', (event) =>  {
         }
     }
 
+    if(event.target.classList.contains("delete-popover")){
+        idSelectedToDelete = event.target.attributes['data-id'].value;
+        console.log(idSelectedToDelete);
+        
+    }
+
     if(event.target.classList.contains("mainImage")){
+
+        idSelectedProduct = event.target.attributes['data-id'].value;
+        console.log(idSelectedProduct);
+        const product = arrProductos.find(item => item.ID == idSelectedProduct);
+        console.log(imgCarousel);
+        let i = 0;
+        imgCarousel.forEach(item => {
+            item.src = product.imagenPrincipal[i];
+            i++;
+            console.log("imagenes de producto: "+product.imagenPrincipal[i], item.src);
+        })
+        //$('#exampleModal').modal('show');
         $('#exampleModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
@@ -132,26 +155,25 @@ const printProductos = async() => {
         const li = `
         <section class="py-5 col-md-6">
             <div class="container">
-                <a class="mainImage" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><img class="mainImage" id="myImg" src=${item.imagenPrincipal[0]} alt="Imagen principal"></a>
+                <a class="mainImage" href="#" data-id="${item.ID}" data-bs-toggle="modal" data-bs-target="#exampleModal2"><img class="mainImage" data-id="${item.ID}" id="myImg" src=${item.imagenPrincipal[0]} alt="Imagen principal"></a>
                 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
+                            <div class="modal-body" style="background-color: rgba(0,0,0,0.9)">
                                 <div id="carouselExampleFade" class="carousel slide carousel-fade">
                                 <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src=${item.imagenPrincipal[0]} class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src=${item.imagenPrincipal[1]} class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src=${item.imagenPrincipal[2]} class="d-block w-100" alt="...">
-                                </div>
+                                    <div class="carousel-item active">
+                                        <img src="" class="d-block w-100" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="" class="d-block w-100" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="" class="d-block w-100" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="" class="d-block w-100" alt="...">
+                                    </div>
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -198,7 +220,7 @@ const printProductos = async() => {
                     <button class="counter-buttons" value="+" data-id="${item.ID}">+</button>
                 </div>
                 <button type="button" id="Add-to-cart" class="addToCart" data-id="${item.ID}">
-                    <img src="images/shopping-cart.jpg" alt="">
+                    <img src="images/icon-cart.svg" alt="">
                     Add to cart
                 </button>
             </div>
@@ -207,9 +229,11 @@ const printProductos = async() => {
     });
     const ul = document.getElementById('listaProductos');
     ul.innerHTML = html;
-    editButton = document.querySelector(".editProduct");
+    //editButton = document.querySelector(".editProduct");
     pCount = document.querySelectorAll(".p-count")
     pCount.value = 0;
+    imgCarousel = document.querySelectorAll(".d-block");
+    //console.log(imgCarousel);
     //img = document.getElementById("myImg");    
     // Get the modal
     // let modal = document.getElementById("myModal");
@@ -248,3 +272,46 @@ formulario.addEventListener('submit', async (event) => {
 });
 
 printProductos();
+
+// export const enviarInfo = () => {
+
+//     const nombre = document.getElementById('nombre');
+//     const cedula = document.getElementById('ID');
+//     const celular = document.getElementById('celular');
+//     const correo = document.getElementById('correo');
+//     const tarjeta = document.getElementById('card-number');
+//     const MM = document.getElementById('MM');
+//     const YY = document.getElementById('YY');
+//     const digitos = document.getElementById('000');
+//     const propietario = document.getElementById('Cardholder');
+
+//     //Datos del formulario
+//     const FormData = {
+//         nombre,
+//         cedula,
+//         celular,
+//         correo,
+//         tarjeta,
+//         MM,
+//         YY,
+//         digitos,
+//         propietario
+//     };
+
+//     // Solicitud  HTTP POST a JSON
+
+//     fetch("http://localhost:3000/compradores", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify(FormData)
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log("Datos almacenados:", data);
+//     })
+//     .catch(error => {
+//         console.error("Error al almacenar los datos:", error);
+//     });
+// }

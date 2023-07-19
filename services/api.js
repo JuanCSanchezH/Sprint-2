@@ -3,7 +3,7 @@ const URL = 'http://localhost:3000'
 
 export const createProduct = async (product) => {
     try {
-        const response = await fetch(`${URL}/productos`, {
+        const response = await fetch(`${URL}/compradores`, {
             method: 'POST', //Verbo http
             headers: {'Content-Type': 'application/json'}, //Encabezado tipo de contenido: JSON
             body: JSON.stringify(product)
