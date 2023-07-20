@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap');
 * {
-  font-family: 'Kumbh Sans', sans-serif;
+  font-family: 'Kumbh Sans', sans-serif !important;
 }
 body {
     background-color: white;
@@ -187,9 +187,11 @@ article {
     display: flex;
     justify-content: end;
     align-items: start;
-    width: 40px;
+    width: 20px;
     border: none;
     background: none;
+    padding-inline: 0;
+    margin-right: 15px;
   }
 
   #cont50 {
@@ -268,7 +270,6 @@ article {
     align-items: center;
     margin: auto;
     font-weight: bold;
-
   }
 
   /*************************** MODAL GALERÍA **********************************/
@@ -334,7 +335,7 @@ article {
     to {transform:scale(1)}
   }
   
-  /* The Close Button */
+  The Close Button
   .close {
     position: absolute;
     top: 15px;
@@ -356,5 +357,181 @@ article {
   @media only screen and (max-width: 700px){
     .modal-content {
       width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    body {
+      padding: 0;
+    }
+
+    .navbar-toggler{
+      position: absolute;
+    }
+
+    .navbar-collapse{
+      text-align: end;
+    }
+
+    .navbar-brand{
+      margin-left: 80px
+    }
+
+    #listaProductos{
+      padding: 0;
+    }
+    
+    #myImg{
+      margin-top: 40px;
+      width: 100%;
+      border-radius: 0;
+    }
+
+    #offcanvasWithBothOptions{
+      width: 50%
+    }
+
+    .Thumbnails{
+      display: none;
+    }
+
+    .section{
+      padding: 0 !important;
+      margin: 0;
+    }
+
+    .container{
+      padding: 0;
+    }
+
+    .article{
+      width: 100%;
+      padding-inline: 0;
+    }
+
+    .Product-details{
+      margin-inline: 50px;
+    }
+
+    .Price{
+      margin-top: 0;
+      width: 50%;
+    }
+
+    .price-discount{
+      margin-top: 30px;
+    }
+
+    .price-discount s{
+      display: flex;
+      justify-content: center;
+      align-items:center;
+      width: 50%;
+    }
+
+    .add-article{
+      flex-direction: column;
+    }
+
+    .counter{
+      width: 85%;
+    }
+
+    #Add-to-cart{
+      width: 85%;
+    }
+
+    #exampleModal{
+      z-index: 1075;
+    }
+
+    .offcanvas-body a{
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1136px) {
+    body {
+      padding: 0;
+    }
+
+    .navbar-toggler{
+      position: absolute;
+    }
+
+    .navbar-collapse{
+      text-align: end;
+    }
+
+    .navbar-brand{
+      margin-left: 80px
+    }
+
+    .container-fluid{
+      padding-inline: 30px;
+    }
+
+    #listaProductos{
+      padding: 0;
+    }
+    
+    #myImg{
+      width: 100%;
+      border-radius: 0;
+    }
+
+    #offcanvasWithBothOptions{
+      width: 50%
+    }
+
+    .Thumbnails{
+      display: none;
+    }
+
+    .article{
+      width: 45%;
+      padding-inline: 0;
+    }
+
+    section{
+      margin-left: 20px;
+    }
+
+    .Product-details{
+      margin-inline: 20px;
+    }
+
+    .Price{
+      margin-top: 0;
+      width: 50%;
+    }
+
+    .price-discount s{
+      display: flex;
+      justify-content: center;
+      align-items:center;
+      width: 50%;
+    }
+
+    .add-article{
+      flex-direction: column;
+    }
+
+    .counter{
+      width: 85%;
+    }
+
+    #Add-to-cart{
+      width: 85%;
+    }
+
+    #exampleModal{
+      z-index: 1075;
+    }
+
+    .offcanvas-body a{
+      margin-bottom: 20px;
+      font-weight: bold;
     }
   }

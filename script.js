@@ -1,4 +1,4 @@
-import {listProducts, createProduct, updateProduct, deleteProduct} from './services/api.js';
+import {listProducts, createProduct} from './services/api.js';
 
 let arrProductos = [];
 const formulario = document.querySelector("form");
@@ -7,24 +7,30 @@ let idSelectedProduct = null;
 let cart = [];
 let total = null;
 let imgCarousel = null;
-let btnDelete = null;
-let idSelectedToDelete = null
+let mainImgs = null
+
+document.addEventListener('DOMContentLoaded',async()=>{
+    try {
+        await printProductos();
+        const thumbnails = document.querySelectorAll('.thumbnail');
+
+        mainImgs.forEach(mainImg => {
+            thumbnails.forEach(thumbnail =>{
+                if(thumbnail.attributes['data-id'].value == mainImg.attributes['data-id'].value){
+                    thumbnail.addEventListener('click', ()=>{
+                        mainImg.src = thumbnail.src;
+                    });
+                }
+            })
+        })
+            
+    } catch (error) {
+        console.log(error)
+    }
+
+})
 
 document.addEventListener('click', (event) =>  {
-    // if(event.target.classList.contains('editProduct')) {
-    //     idSelectedProduct = event.target.attributes['data-id'].value;
-    //     const product = arrProductos.find(item => item.id == idSelectedProduct)
-        
-    //     document.getElementById("nombre").value = product.nombre;
-    //     document.getElementById("precio").value = product.precio;
-    //     document.getElementById("cantidad").value = product.cantidad;
-    //     document.getElementById("categoria").value = product.categoria;
-    // }
-
-    // if(event.target.classList.contains('deleteProduct')) {
-    //     idSelectedProduct = event.target.attributes['data-id'].value;
-    //     deleteProduct(idSelectedProduct)
-    // }
 
     if(event.target.classList.contains("counter-buttons")){
         idSelectedProduct = event.target.attributes['data-id'].value;
@@ -78,29 +84,12 @@ document.addEventListener('click', (event) =>  {
                     </div>
                     <div class="row" style="justify-content: space-between">
                         <p id="units-popover" class="col-6">Units: ${item.unidades}</p>
-                        <button id="delete-popover" data-id="${item.ID}" class="delete-popover"><img src="/images/trash_3096673.png" alt=""></button>
                     </div>
                 </div>
             </div>
             `
         });
-        // const miBoton = document.createElement('button');
-        // miBoton.classList.add('btn', 'btn-danger', 'mx-5');
-        // miBoton.textContent = 'X';
-        // miBoton.style.marginLeft = '1rem';
-        // miBoton.dataset.item = item;
-        // miBoton.addEventListener('click', borrarItemCarrito);
-        // // Mezclamos nodos
-        // miNodo.appendChild(miBoton);
-        // //DOMcarrito.appendChild(miNodo)
-
-        btnDelete = document.querySelectorAll(".delete-popover");
-        btnDelete.forEach(item => {
-            item.onclick = () =>{
-                idSelectedToDelete = item.attributes['data-id'].value;
-                console.log(idSelectedToDelete);
-            }
-        });    
+           
         html.innerHTML += `
             <div class="row mb-2">
                 <p class="col-12" id="price-popover">Total: $${total}</p>
@@ -122,12 +111,6 @@ document.addEventListener('click', (event) =>  {
         }
     }
 
-    if(event.target.classList.contains("delete-popover")){
-        idSelectedToDelete = event.target.attributes['data-id'].value;
-        console.log(idSelectedToDelete);
-        
-    }
-
     if(event.target.classList.contains("mainImage")){
 
         idSelectedProduct = event.target.attributes['data-id'].value;
@@ -138,9 +121,7 @@ document.addEventListener('click', (event) =>  {
         imgCarousel.forEach(item => {
             item.src = product.imagenPrincipal[i];
             i++;
-            console.log("imagenes de producto: "+product.imagenPrincipal[i], item.src);
         })
-        //$('#exampleModal').modal('show');
         $('#exampleModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
@@ -148,14 +129,15 @@ document.addEventListener('click', (event) =>  {
 })
 
 const printProductos = async() => {
+
     arrProductos = await listProducts();
     let html = ``;
     arrProductos.forEach(item => {
         const originalPrice = (item.precio/(1-(item.descuento/100))).toFixed(2);
         const li = `
-        <section class="py-5 col-md-6">
+        <section class="py-5 col-md-6 section">
             <div class="container">
-                <a class="mainImage" href="#" data-id="${item.ID}" data-bs-toggle="modal" data-bs-target="#exampleModal2"><img class="mainImage" data-id="${item.ID}" id="myImg" src=${item.imagenPrincipal[0]} alt="Imagen principal"></a>
+                <a href="#" data-id="${item.ID}" data-bs-toggle="modal" data-bs-target="#exampleModal2"><img class="mainImage" data-id="${item.ID}" id="myImg" src=${item.imagenPrincipal[0]} alt="Imagen principal"></a>
                 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -189,10 +171,10 @@ const printProductos = async() => {
                     </div>
                 </div>
                 <div class="Thumbnails">
-                    <a href="#"><img src=${item.Thumbnails[0]} alt="Miniatura1" onclick="changeImage('images/product-1-thumbnail.jpg')"></a>
-                    <a href="#"><img src=${item.Thumbnails[1]} alt="Miniatura2" onclick="changeImage('images/product-2-thumbnail.jpg')"></a>
-                    <a href="#"><img src=${item.Thumbnails[2]} alt="Miniatura3" onclick="changeImage('images/producto-3-thumbnail.jpg')"></a>
-                    <a href="#"><img src=${item.Thumbnails[3]} alt="Miniatura4" onclick="changeImage('images/producto-4-thumbnail.jpg')"></a>
+                    <a href="#"><img src=${item.imagenPrincipal[0]} alt="Miniatura1" class="thumbnail" data-id="${item.ID}"></a>
+                    <a href="#"><img src=${item.imagenPrincipal[1]} alt="Miniatura1" class="thumbnail" data-id="${item.ID}"></a>
+                    <a href="#"><img src=${item.imagenPrincipal[2]} alt="Miniatura1" class="thumbnail" data-id="${item.ID}"></a>
+                    <a href="#"><img src=${item.imagenPrincipal[3]} alt="Miniatura1" class="thumbnail" data-id="${item.ID}"></a>
                 </div>
                 <!--<div id="myModal" class="modal">
                     <span class="close">&times;</span>
@@ -200,18 +182,20 @@ const printProductos = async() => {
                 </div> -->
             </div>
         </section>
-        <article class="col-md-6"> 
+        <article class="py-5 col-md-6 article"> 
             <div class="Product-details">
                 <h6>SNEAKER COMPANY</h6>
                 <h1>${item.nombre}</h1>
                 <p>${item.descripcion}</p>
-                <div class="Price">
-                    <p>$${item.precio}</p>
-                    <div id="cont50">
-                        <p>${item.descuento}%</p>
+                <div class="row price-discount">
+                    <div class="Price">
+                        <p>$${item.precio}</p>
+                        <div id="cont50">
+                            <p>${item.descuento}%</p>
+                        </div>
                     </div>
+                    <s id="descuento">$${originalPrice}</s>
                 </div>
-                <s id="descuento">$${originalPrice}</s>
             </div>
             <div class="add-article">
                 <div class="counter">
@@ -229,30 +213,10 @@ const printProductos = async() => {
     });
     const ul = document.getElementById('listaProductos');
     ul.innerHTML = html;
-    //editButton = document.querySelector(".editProduct");
     pCount = document.querySelectorAll(".p-count")
     pCount.value = 0;
     imgCarousel = document.querySelectorAll(".d-block");
-    //console.log(imgCarousel);
-    //img = document.getElementById("myImg");    
-    // Get the modal
-    // let modal = document.getElementById("myModal");
-
-    // // Get the image and insert it inside the modal - use its "alt" text as a caption
-    // var img = document.getElementById("myImg");
-    // var modalImg = document.getElementById("img01");
-    //     img.onclick = function(){
-    //     modal.style.display = "block";
-    //     modalImg.src = this.src;
-    // }
-
-    // // Get the <span> element that closes the modal
-    // var span = document.getElementsByClassName("close")[0];
-
-    // // When the user clicks on <span> (x), close the modal
-    // span.onclick = function() { 
-    // modal.style.display = "none";
-    // }
+    mainImgs = document.querySelectorAll('.mainImage')
     
 }
 
@@ -271,47 +235,3 @@ formulario.addEventListener('submit', async (event) => {
     printProductos();
 });
 
-printProductos();
-
-// export const enviarInfo = () => {
-
-//     const nombre = document.getElementById('nombre');
-//     const cedula = document.getElementById('ID');
-//     const celular = document.getElementById('celular');
-//     const correo = document.getElementById('correo');
-//     const tarjeta = document.getElementById('card-number');
-//     const MM = document.getElementById('MM');
-//     const YY = document.getElementById('YY');
-//     const digitos = document.getElementById('000');
-//     const propietario = document.getElementById('Cardholder');
-
-//     //Datos del formulario
-//     const FormData = {
-//         nombre,
-//         cedula,
-//         celular,
-//         correo,
-//         tarjeta,
-//         MM,
-//         YY,
-//         digitos,
-//         propietario
-//     };
-
-//     // Solicitud  HTTP POST a JSON
-
-//     fetch("http://localhost:3000/compradores", {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(FormData)
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log("Datos almacenados:", data);
-//     })
-//     .catch(error => {
-//         console.error("Error al almacenar los datos:", error);
-//     });
-// }
