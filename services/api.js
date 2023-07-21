@@ -1,5 +1,5 @@
-//Verbos http. Fetch es un método que se encarga de hacer la conexión http
-const URL = 'http://localhost:3000'
+//Verbos http  C (create-->POST) R (read-->GET) U (update-->PUT) D (delete-->DELETE). Fetch es un método JS que se encarga de hacer la conexión http mediante el endpoint extraído de json-server
+const URL = 'http://localhost:3000' //Endpoint
 
 export const createProduct = async (product) => {
     try {

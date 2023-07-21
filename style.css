@@ -4,7 +4,7 @@
 }
 body {
     background-color: white;
-    padding-inline: 100px;
+    padding-inline: 70px;
 }
 header {
   padding-bottom: 30px;
@@ -28,19 +28,19 @@ header {
   #collections{
     margin-top: -15px;
     margin-left: 20px;
-    padding-bottom: 40px;
+    padding-bottom: 47px;;
   }
 
   #men{
     margin-top: -15px;
     margin-left: 150px;
-    padding-bottom: 40px;
+    padding-bottom: 47px;
   }
 
   #women{
     margin-top: -15px;
     margin-left: 230px;
-    padding-bottom: 40px;
+    padding-bottom: 47px;
   }
 }
 
@@ -70,7 +70,7 @@ header {
 }
 
 main {
-    padding: 50px 70px;
+    padding: 50px 50px;
     
 
 }
@@ -269,7 +269,7 @@ article {
     text-align: center;
     align-items: center;
     margin: auto;
-    font-weight: bold;
+    font-weight: bold;
   }
 
   /*************************** MODAL GALERÍA **********************************/
@@ -451,7 +451,7 @@ article {
     }
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1136px) {
+  @media screen and (min-width: 768px) and (max-width: 1091px) {
     body {
       padding: 0;
     }

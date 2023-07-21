@@ -1,7 +1,5 @@
-// Importación de módulos
 import {listProducts, createProduct} from './services/api.js';
 
-// Declaración de variables globales
 let arrProductos = [];
 const formulario = document.querySelector("form");
 let pCount = null;
@@ -9,10 +7,10 @@ let idSelectedProduct = null;
 let cart = [];
 let total = null;
 let imgCarousel = null;
-let mainImgs = null;
+let btnsDelete = null;
+let idSelectedToDelete = null
+let mainImgs = null
 
-// Evento de escucha -> Contenido del DOM cargado
-// Por cada imagen y por cada thumbnail, se evalúa la igualdad de los ID. Si son iguales, se añade un evento de escucha tipo click en ese thumbnail para que cuando suceda, se haga el cambio de imágenes.
 document.addEventListener('DOMContentLoaded',async()=>{
     try {
         await printProductos();
@@ -20,7 +18,6 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
         mainImgs.forEach(mainImg => {
             thumbnails.forEach(thumbnail =>{
-                console.log(thumbnail.attributes);
                 if(thumbnail.attributes['data-id'].value == mainImg.attributes['data-id'].value){
                     thumbnail.addEventListener('click', ()=>{
                         mainImg.src = thumbnail.src;
@@ -35,36 +32,48 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
 })
 
-
 document.addEventListener('click', (event) =>  {
 
-    // Si el elemento seleccionado contiene la clase "counter-buttons", se ejecuta la función de incremento y decremento del contador (botón + y -)
+    if(event.target.classList.contains('delete-popover')) {
+        $("[data-bs-toggle='popover']").popover('show');
+        idSelectedToDelete = event.target.attributes['data-id'].value;
+        
+        const product = cart.find(item => item.ID == idSelectedProduct);
+        console.log(product, cart);
+        btnsDelete.forEach(btnDelete => {
+                
+            if(idSelectedToDelete == btnDelete.attributes['data-id'].value){
+                cart.splice(cart.indexOf(product), 1);
+                
+                console.log('idSelectedToDelete: '+ idSelectedToDelete, 'btnDelete.attributes[data-id].value: '+ btnDelete.attributes['data-id'].value, 'cart.indexOf(product): '+cart.indexOf(product));
+            }
+            console.log(cart);
+        }); 
+    }
+
     if(event.target.classList.contains("counter-buttons")){
         idSelectedProduct = event.target.attributes['data-id'].value;
         const operacion = event.target.attributes["value"].nodeValue;
         const product = arrProductos.find(item => item.ID == idSelectedProduct);
-        pCount.forEach(p =>{
-            p.textContent = '';
-            if(idSelectedProduct==p.attributes['data-id'].value){
+        pCount.forEach(item =>{
+            item.textContent = '';
+            if(idSelectedProduct==item.attributes['data-id'].value){
                 if(operacion == "+"){
-                    product.contador +=  1;
+                    product.contador += 1;
                 }else if(operacion == "-" && product.contador>1){
                     product.contador -= 1;
                 }
-                p.textContent = product.contador;
+                item.textContent = product.contador;
             }
         })
     }
 
-    // Si el elemento seleccionado contiene la clase "addToCart", me muestra el popover abierto, encuentra el producto por IDs, agregar productos al carrito o si está repetido que se actualice las unidades elegidas. Se agrega la funcionalidad del modal para el envío de información por el formulario.
     if(event.target.classList.contains("addToCart")){
         $("[data-bs-toggle='popover']").popover('show');
         let html = document.getElementById("contenido");
         html.innerHTML = ``;
         idSelectedProduct = event.target.attributes['data-id'].value;
         const product = arrProductos.find(item => item.ID == idSelectedProduct)
-
-        //Sweet-Alert
         swal({
             title: product.nombre,
             type: "success",
@@ -72,7 +81,6 @@ document.addEventListener('click', (event) =>  {
             showConfirmButton: false,
             timer: 2500
         });
-
         if(cart.includes(product)){
             product.unidades += product.contador;
         }else{
@@ -95,11 +103,13 @@ document.addEventListener('click', (event) =>  {
                     </div>
                     <div class="row" style="justify-content: space-between">
                         <p id="units-popover" class="col-6">Units: ${item.unidades}</p>
+                        <button id="delete-popover"><img class="delete-popover" data-id="${item.ID}" src="/images/trash_3096673.png" alt=""></button>
                     </div>
                 </div>
             </div>
             `
         });
+        btnsDelete = document.querySelectorAll(".delete-popover");
            
         html.innerHTML += `
             <div class="row mb-2">
@@ -121,12 +131,13 @@ document.addEventListener('click', (event) =>  {
             p.textContent = cart.length;
         }
     }
-    
-    //Modal de la galería
+
     if(event.target.classList.contains("mainImage")){
 
         idSelectedProduct = event.target.attributes['data-id'].value;
+        console.log(idSelectedProduct);
         const product = arrProductos.find(item => item.ID == idSelectedProduct);
+        console.log(imgCarousel);
         let i = 0;
         imgCarousel.forEach(item => {
             item.src = product.imagenPrincipal[i];
@@ -138,13 +149,13 @@ document.addEventListener('click', (event) =>  {
     }
 })
 
-// Mostrar todos los productos dinámicamente
 const printProductos = async() => {
 
     arrProductos = await listProducts();
     let html = ``;
     arrProductos.forEach(item => {
-        const originalPrice = (item.precio/(1-(item.descuento/100))).toFixed(2);
+        if(item.categoria == 'mujer'){
+            const originalPrice = (item.precio/(1-(item.descuento/100))).toFixed(2);
         const li = `
         <section class="py-5 col-md-6 section">
             <div class="container">
@@ -221,8 +232,9 @@ const printProductos = async() => {
             </div>
         </article>`
         html += li
+        }
     });
-    const ul = document.getElementById('listaProductos');
+    const ul = document.getElementById('listaProductos-women');
     ul.innerHTML = html;
     pCount = document.querySelectorAll(".p-count")
     pCount.value = 0;
@@ -231,7 +243,6 @@ const printProductos = async() => {
     
 }
 
-// Envío de la información del compardor para crear un registro en la base de datos
 formulario.addEventListener('submit', async (event) => {
     event.preventDefault();
     event.stopPropagation();
